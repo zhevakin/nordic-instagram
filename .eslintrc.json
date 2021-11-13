@@ -1,14 +1,6 @@
 {
-  "extends": [
-    "airbnb",
-    "plugin:@next/next/recommended",
-    "prettier"
-  ],
-  "plugins": [
-    "import",
-    "react",
-    "react-hooks"
-  ],
+  "extends": ["airbnb", "plugin:@next/next/recommended", "prettier"],
+  "plugins": ["import", "react", "react-hooks"],
   "rules": {
     "react/jsx-filename-extension": "off",
     "react/function-component-definition": "off",
