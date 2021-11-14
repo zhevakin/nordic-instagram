@@ -3,8 +3,6 @@ import Link from 'next/link'
 import {
   Box,
   Button,
-  Card,
-  CardContent,
   Container,
   Grid,
   TextField,
@@ -13,6 +11,7 @@ import {
 import { useForm } from 'react-hook-form'
 import { useAuth, useUser } from 'reactfire'
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import PaperBox from '../../components/PaperBox'
 
 const RegisterPage = () => {
   const { register, handleSubmit } = useForm()
@@ -37,62 +36,58 @@ const RegisterPage = () => {
         <Grid container justifyContent="center">
           <Grid item xs={12} md={6}>
             <Box sx={{ mt: 2 }}>
-              <Card>
-                <CardContent>
-                  <Typography component="h1" variant="h4">
-                    Вход
-                  </Typography>
-                  {isLoggedin && (
-                    <div>
-                      <p>Вы вошли как {user.email}</p>
-                      <Button variant="contained" onClick={handleSignOut}>
-                        Выйти
+              <PaperBox>
+                <Typography component="h1" variant="h4">
+                  Вход
+                </Typography>
+                {isLoggedin && (
+                  <div>
+                    <p>Вы вошли как {user.email}</p>
+                    <Button variant="contained" onClick={handleSignOut}>
+                      Выйти
+                    </Button>
+                  </div>
+                )}
+                {!isLoggedin && (
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <TextField
+                      type="email"
+                      label="Email"
+                      fullWidth
+                      margin="normal"
+                      {...register('email')}
+                      required
+                    />
+                    <TextField
+                      type="password"
+                      label="Пароль"
+                      fullWidth
+                      margin="normal"
+                      {...register('password')}
+                      required
+                    />
+                    <Box sx={{ mt: 2 }}>
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        fullWidth
+                      >
+                        Войти
                       </Button>
-                    </div>
-                  )}
-                  {!isLoggedin && (
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                      <TextField
-                        type="email"
-                        label="Email"
-                        fullWidth
-                        margin="normal"
-                        {...register('email')}
-                        required
-                      />
-                      <TextField
-                        type="password"
-                        label="Пароль"
-                        fullWidth
-                        margin="normal"
-                        {...register('password')}
-                        required
-                      />
-                      <Box sx={{ mt: 2 }}>
-                        <Button
-                          type="submit"
-                          variant="contained"
-                          color="primary"
-                          size="large"
-                          fullWidth
-                        >
-                          Войти
-                        </Button>
-                      </Box>
-                    </form>
-                  )}
-                </CardContent>
-              </Card>
+                    </Box>
+                  </form>
+                )}
+              </PaperBox>
               {!isLoggedin && (
                 <Box sx={{ mt: 2 }}>
-                  <Card>
-                    <CardContent>
-                      Еще нет аккаунта?{' '}
-                      <Link href="/auth/register" passHref>
-                        <Button>Зарегистрироваться</Button>
-                      </Link>
-                    </CardContent>
-                  </Card>
+                  <PaperBox>
+                    Еще нет аккаунта?{' '}
+                    <Link href="/auth/register" passHref>
+                      <Button>Зарегистрироваться</Button>
+                    </Link>
+                  </PaperBox>
                 </Box>
               )}
             </Box>
