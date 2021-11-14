@@ -76,7 +76,7 @@ const RegisterPage = () => {
                           size="large"
                           fullWidth
                         >
-                          Вход
+                          Войти
                         </Button>
                       </Box>
                     </form>
