@@ -11,7 +11,8 @@ function AboutPage() {
       <h1>About Company</h1>
       <p>Lorem ipsum</p>
       <Link href="/">Home page</Link>
-      <Button variant="contained" size="large" color="primary">
+
+      <Button block variant="contained" size="large" color="primary">
         CLICK ME
       </Button>
       <Button variant="contained" size="large" color="secondary">
