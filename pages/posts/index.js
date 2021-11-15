@@ -1,13 +1,12 @@
 import Head from 'next/head'
 import { useCallback } from 'react'
 import { Button, Container, Card, CircularProgress } from '@mui/material'
-import { addDoc, getFirestore, collection } from 'firebase/firestore'
+import { addDoc, collection } from 'firebase/firestore'
 import { useCollection } from 'react-firebase-hooks/firestore'
-import firebaseApp from '../../firebaseApp'
-
-const firestore = getFirestore(firebaseApp)
+import useFirestore from '../../hooks/useFirestore'
 
 const PostsPage = () => {
+  const firestore = useFirestore()
   const postsCollection = collection(firestore, 'posts')
   const [posts, loading] = useCollection(postsCollection)
 

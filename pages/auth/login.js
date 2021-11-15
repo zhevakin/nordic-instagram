@@ -10,14 +10,13 @@ import {
   Typography,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
-import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import PaperBox from '../../components/PaperBox'
-import firebaseApp from '../../firebaseApp'
-
-const auth = getAuth(firebaseApp)
+import useAuth from '../../hooks/useAuth'
 
 const RegisterPage = () => {
+  const auth = useAuth()
   const { register, handleSubmit } = useForm()
   const [user, loading] = useAuthState(auth)
 
