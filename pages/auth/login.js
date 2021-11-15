@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import {
@@ -9,23 +10,26 @@ import {
   Typography,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
-import { useAuth, useUser } from 'reactfire'
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import PaperBox from '../../components/PaperBox'
+import firebaseApp from '../../firebaseApp'
+
+const auth = getAuth(firebaseApp)
 
 const RegisterPage = () => {
   const { register, handleSubmit } = useForm()
-  const auth = useAuth()
-  const { status, data: user } = useUser()
-  const isLoggedin = status === 'success' && user
+  const [user, loading] = useAuthState(auth)
 
-  const onSubmit = (data) => {
+  const isLoggedin = !loading && user
+
+  const login = useCallback((data) => {
     signInWithEmailAndPassword(auth, data.email, data.password)
-  }
+  }, [])
 
-  const handleSignOut = () => {
+  const logout = useCallback(() => {
     signOut(auth)
-  }
+  }, [])
 
   return (
     <>
@@ -43,13 +47,13 @@ const RegisterPage = () => {
                 {isLoggedin && (
                   <div>
                     <p>Вы вошли как {user.email}</p>
-                    <Button variant="contained" onClick={handleSignOut}>
+                    <Button variant="contained" onClick={logout}>
                       Выйти
                     </Button>
                   </div>
                 )}
                 {!isLoggedin && (
-                  <form onSubmit={handleSubmit(onSubmit)}>
+                  <form onSubmit={handleSubmit(login)}>
                     <TextField
                       type="email"
                       label="Email"

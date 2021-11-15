@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import {
@@ -9,22 +10,25 @@ import {
   Typography,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
-import { useAuth, useUser } from 'reactfire'
-import { createUserWithEmailAndPassword, signOut } from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword, signOut } from 'firebase/auth'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import PaperBox from '../../components/PaperBox'
+import firebaseApp from '../../firebaseApp'
+
+const auth = getAuth(firebaseApp)
 
 const RegisterPage = () => {
   const { register, handleSubmit } = useForm()
-  const auth = useAuth()
-  const { status, data: user } = useUser()
-  const isLoggedin = status === 'success' && user
-  const onSubmit = (data) => {
-    createUserWithEmailAndPassword(auth, data.email, data.password)
-  }
+  const [user, loading] = useAuthState(auth)
+  const isLoggedin = !loading && user
 
-  const handleSignOut = () => {
+  const onSubmit = useCallback((data) => {
+    createUserWithEmailAndPassword(auth, data.email, data.password)
+  }, [])
+
+  const handleSignOut = useCallback(() => {
     signOut(auth)
-  }
+  }, [])
 
   return (
     <>
