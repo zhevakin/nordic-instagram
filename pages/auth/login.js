@@ -9,15 +9,17 @@ import {
   Typography,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
-import { useAuth, useUser } from 'reactfire'
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import PaperBox from '../../components/PaperBox'
+import firebaseApp from '../../firebaseApp'
+
+const auth = getAuth(firebaseApp)
 
 const RegisterPage = () => {
   const { register, handleSubmit } = useForm()
-  const auth = useAuth()
-  const { status, data: user } = useUser()
-  const isLoggedin = status === 'success' && user
+  const [user, loading] = useAuthState(auth)
+  const isLoggedin = !loading && user
 
   const onSubmit = (data) => {
     signInWithEmailAndPassword(auth, data.email, data.password)
