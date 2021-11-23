@@ -1,4 +1,6 @@
+import Head from 'next/head'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import Layout from '../components/Layout'
 import '../styles/globals.css'
 
 const theme = createTheme({
@@ -17,7 +19,12 @@ const theme = createTheme({
 function MyApp({ Component, pageProps }) {
   return (
     <ThemeProvider theme={theme}>
-      <Component {...pageProps} />
+      <Head>
+        <title>Nordic Instagram</title>
+      </Head>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </ThemeProvider>
   )
 }

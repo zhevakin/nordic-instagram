@@ -10,19 +10,31 @@ import {
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import { getFirestore, doc, setDoc } from 'firebase/firestore'
 import { getAuth, createUserWithEmailAndPassword, signOut } from 'firebase/auth'
 import PaperBox from '../../components/PaperBox'
 import firebaseApp from '../../firebaseApp'
 
 const auth = getAuth(firebaseApp)
+const db = getFirestore(firebaseApp)
 
 const RegisterPage = () => {
   const { register, handleSubmit } = useForm()
   const [user, loading] = useAuthState(auth)
   const isLoggedin = !loading && user
 
-  const onSubmit = (data) => {
-    createUserWithEmailAndPassword(auth, data.email, data.password)
+  const onSubmit = async (data) => {
+    const userCredentials = await createUserWithEmailAndPassword(
+      auth,
+      data.email,
+      data.password
+    )
+    const { uid } = userCredentials.user
+    const userDoc = doc(db, 'users', uid)
+    setDoc(userDoc, {
+      username: data.username,
+      fullname: data.fullname,
+    })
   }
 
   const handleSignOut = () => {
