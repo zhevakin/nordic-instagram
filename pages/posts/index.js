@@ -9,7 +9,6 @@ const db = getAppFirestore()
 const PostsPage = () => {
   const postCollection = collection(db, 'posts')
   const queryPosts = query(postCollection, orderBy('createdAt', 'desc'))
-
   const [posts] = useCollectionData(queryPosts, { idField: 'id' })
 
   return (
@@ -17,7 +16,7 @@ const PostsPage = () => {
       <h1>Посты</h1>
       {posts &&
         posts.map((post) => (
-          <Box sx={{ mb: 2 }}>
+          <Box sx={{ mb: 2 }} key={post.id}>
             <Post key={post.id} post={post} />
           </Box>
         ))}

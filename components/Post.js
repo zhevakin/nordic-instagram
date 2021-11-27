@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Card, CardContent } from '@mui/material'
 import PropTypes from 'prop-types'
 import { doc } from 'firebase/firestore'
@@ -13,14 +14,25 @@ const Post = ({ post }) => {
   return (
     <Card>
       <CardContent>
+        <div>
+          {postUser && (
+            <Link href={`/users/${post.uid}`}>{postUser.username}</Link>
+          )}
+        </div>
         <p>{post.text}</p>
-        {postUser && <p>{postUser.username}</p>}
-        <img src={post.imageUrl} alt="" />
-        {post.createdAt && (
-          <small>
-            {new Date(post.createdAt.seconds * 1000).toLocaleDateString()}
-          </small>
-        )}
+        <div>
+          {post.createdAt && (
+            <small>
+              {new Date(post.createdAt.seconds * 1000).toLocaleDateString()}
+            </small>
+          )}
+        </div>
+        <Link href={`/posts/${post.id}`} passHref>
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+          <a>
+            <img src={post.imageUrl} alt="" style={{ maxHeight: 300 }} />
+          </a>
+        </Link>
       </CardContent>
     </Card>
   )
@@ -28,6 +40,7 @@ const Post = ({ post }) => {
 
 Post.propTypes = {
   post: PropTypes.shape({
+    id: PropTypes.string,
     imageUrl: PropTypes.string,
     text: PropTypes.string,
     uid: PropTypes.string,

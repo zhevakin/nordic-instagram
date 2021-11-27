@@ -26,7 +26,7 @@ const auth = getAuth(firebaseApp)
 const storage = getStorage(firebaseApp)
 
 const CreatePost = () => {
-  const [imageUrl, setImageUrl] = useState()
+  const [imageUrl, setImageUrl] = useState('')
   const [user] = useAuthState(auth)
   const postCollection = collection(db, 'posts')
   const { register, handleSubmit } = useForm()
