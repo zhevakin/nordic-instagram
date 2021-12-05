@@ -23,7 +23,7 @@ function UserPage() {
         <title>Пост</title>
       </Head>
       {postLoading && <CircularProgress />}
-      <Box sx={{ mb: 2 }}>{!postLoading && post && <Post post={post} />}</Box>
+      <Box sx={{ mb: 2, mt: 3 }}>{!postLoading && post && <Post post={post} />}</Box>
       <Comments postId={postId} />
     </Container>
   )

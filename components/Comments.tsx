@@ -10,6 +10,8 @@ import {
   query,
   orderBy,
   serverTimestamp,
+  updateDoc,
+  increment,
 } from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
@@ -21,10 +23,10 @@ const auth = getAuth(firebaseApp)
 
 const Comments = ({ postId }) => {
   const [user] = useAuthState(auth)
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit, setValue } = useForm()
 
   const commentsCollection = collection(db, 'posts', postId, 'comments')
-  const commentsQuery = query(commentsCollection, orderBy('createdAt', 'desc'))
+  const commentsQuery = query(commentsCollection, orderBy('createdAt'))
   const [comments] = useCollectionData(commentsQuery, { idField: 'id' })
 
   const onSubmit = async (data) => {
@@ -33,22 +35,32 @@ const Comments = ({ postId }) => {
     const userData = userSnap.data()
     const { username } = userData
 
-    addDoc(commentsCollection, {
-      uid: user.uid,
-      username,
-      createdAt: serverTimestamp(),
-      text: data.text,
-    })
+    try {
+      await addDoc(commentsCollection, {
+        uid: user.uid,
+        username,
+        createdAt: serverTimestamp(),
+        text: data.text,
+      })
+
+      const postDoc = doc(db, 'posts', postId)
+      updateDoc(postDoc, { commentsCount: increment(1) })
+
+      setValue('text', '')
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
     <div>
       {comments &&
         comments.map((comment) => (
-          <div>
+          <div key={comment.id}>
             <small>
               {comment.username} /{' '}
-              {new Date(comment.createdAt.seconds * 1000).toLocaleDateString()}
+              {comment.createdAt &&
+                new Date(comment.createdAt.seconds * 1000).toLocaleDateString()}
             </small>
             <p>{comment.text}</p>
           </div>
