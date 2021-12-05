@@ -1,8 +1,9 @@
 import Link from 'next/link'
-import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, Button, Toolbar } from '@mui/material'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { getAuth, signOut } from 'firebase/auth'
 import firebaseApp from '../firebaseApp'
+import Logo from '../images/logo.svg'
 
 const auth = getAuth(firebaseApp)
 
@@ -18,9 +19,9 @@ const Layout = ({ children }) => {
     <div>
       <AppBar position="static">
         <Toolbar>
-          <Typography component="h1" variant="h4" sx={{ mr: 2 }}>
-            Nordic Instagram
-          </Typography>
+          <Box sx={{ mr: 2 }}>
+            <Logo width={50} height={50} />
+          </Box>
           <Link href="/posts">
             <Button variant="text" color="secondary" sx={{ mr: 2 }}>
               Посты
