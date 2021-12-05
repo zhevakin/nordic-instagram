@@ -1,6 +1,6 @@
 import { Button, TextField } from '@mui/material'
 import PropTypes from 'prop-types'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import {
   addDoc,
   collection,
@@ -21,15 +21,19 @@ import firebaseApp from '../firebaseApp'
 const db = getFirestore(firebaseApp)
 const auth = getAuth(firebaseApp)
 
+type FormValues = {
+  text: string
+}
+
 const Comments = ({ postId }) => {
   const [user] = useAuthState(auth)
-  const { register, handleSubmit, setValue } = useForm()
+  const { register, handleSubmit, setValue } = useForm<FormValues>()
 
   const commentsCollection = collection(db, 'posts', postId, 'comments')
   const commentsQuery = query(commentsCollection, orderBy('createdAt'))
   const [comments] = useCollectionData(commentsQuery, { idField: 'id' })
 
-  const onSubmit = async (data) => {
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const userDoc = doc(db, 'users', user.uid)
     const userSnap = await getDoc(userDoc)
     const userData = userSnap.data()
