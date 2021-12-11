@@ -1,7 +1,7 @@
 import { Box, Container } from '@mui/material'
 import { collection, query, orderBy } from 'firebase/firestore'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import Post from '../../components/Post'
+import Post from '../../components/Post.tsx'
 import getAppFirestore from '../../util/getAppFirestore'
 
 const db = getAppFirestore()

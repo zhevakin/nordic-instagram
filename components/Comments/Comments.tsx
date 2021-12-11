@@ -16,7 +16,7 @@ import {
 import { getAuth } from 'firebase/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import firebaseApp from '../firebaseApp'
+import firebaseApp from '../../firebaseApp'
 
 const db = getFirestore(firebaseApp)
 const auth = getAuth(firebaseApp)
@@ -69,7 +69,7 @@ const Comments = ({ postId }) => {
             <p>{comment.text}</p>
           </div>
         ))}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} role="form">
         <TextField
           multiline
           fullWidth
